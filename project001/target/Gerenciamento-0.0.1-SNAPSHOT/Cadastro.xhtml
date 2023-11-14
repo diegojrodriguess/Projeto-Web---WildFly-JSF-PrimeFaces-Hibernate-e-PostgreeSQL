@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Cadastro de Alunos</title>
+</h:head>
+<h:body>
+	<h:form id="cadastro">
+		<p:panel header="Cadastro">
+			<h:panelGrid columns="2">
+			
+				<p:outputLabel for="matricula" value="Matricula: " />
+				<p:inputText id="matricula" value="#{alunoController.aluno.matricula}" />
+
+				<p:outputLabel for="nome" value="Nome: " />
+				<p:inputText id="nome" value="#{alunoController.aluno.nome}" />
+				
+				<p:outputLabel for="idade" value="Idade: " />
+				<p:inputText id="idade" value="#{alunoController.aluno.idade}" />
+				
+				<p:outputLabel for="genero" value="Genero: " />
+				<p:inputText id="genero" value="#{alunoController.aluno.genero}" />
+				
+			</h:panelGrid>
+			<p:commandButton value="Salvar" action="#{alunoController.salvar}" />
+		</p:panel>
+	</h:form>
+</h:body>
+</html>
