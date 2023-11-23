@@ -1,25 +1,25 @@
 package project001;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.Persistence;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
 
+@Stateless
 public class AlunoDAO {
 
-	private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("postgres");
-
-	private static EntityManager entityManager = entityManagerFactory.createEntityManager();
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	public void createAluno(Aluno a) {
 		try {
-			entityManager.getTransaction().begin();
 			entityManager.persist(a);
-			entityManager.getTransaction().commit();
 		} catch (Exception e) {
 			System.err.println("Erro ao criar aluno");
 			e.printStackTrace();
-			entityManager.getTransaction().rollback();// desfaz as alteracoes feitas no bd
+			throw e;
 		}
 	}
 
@@ -27,22 +27,19 @@ public class AlunoDAO {
 		Aluno alunoFound = null;
 
 		try {
-			entityManager.getTransaction().begin();
 			alunoFound = entityManager.find(Aluno.class, mat);
-			entityManager.getTransaction().commit();
+			if (alunoFound == null) {
+				throw new EntityNotFoundException("Aluno não encontrado");
+			}
 		} catch (Exception e) {
 			System.err.println("Erro ao buscar o aluno.");
+			throw e;
 		}
-		if (alunoFound == null) {
-			throw new EntityNotFoundException("Aluno não encontrado");
-		}
-
 		return alunoFound;
 	}
 
 	public void updateAluno(Aluno a) {
 		try {
-			entityManager.getTransaction().begin();
 			Aluno alunoFound = entityManager.find(Aluno.class, a.getMatricula());
 			if (alunoFound != null) {
 				// se o aluno que queremos atualizar realmente estiver no banco de dados
@@ -50,12 +47,10 @@ public class AlunoDAO {
 			} else {
 				// aluno nao foi encontrado no bd
 				System.err.println("Aluno nao encontrado");
-				entityManager.getTransaction().rollback();// desfaz as alteracoes feitas no bd
 			}
-			entityManager.getTransaction().commit();
 		} catch (Exception e) {
 			System.err.println("Erro ao atualizar aluno.");
-			entityManager.getTransaction().rollback();// desfaz as alteracoes feitas no bd
+			e.printStackTrace();
 		}
 
 	}
@@ -63,18 +58,39 @@ public class AlunoDAO {
 	public void deleteAluno(int mat) {
 		Aluno alunoFound = null;
 		try {
-			entityManager.getTransaction().begin();
 			alunoFound = entityManager.find(Aluno.class, mat);
 			if (alunoFound == null) {
 				// se o aluno que quisermos deletar nao for encontrado
 				throw new EntityNotFoundException("Aluno não encontrado");
 			} else {
 				entityManager.remove(alunoFound);
-				entityManager.getTransaction().commit();
 			}
 		} catch (EntityNotFoundException e) {
 			System.err.println("Erro ao deletar aluno " + e);
-			entityManager.getTransaction().rollback();
 		}
 	}
+	
+    public List<Aluno> findAll() {
+        try {
+            Query query = entityManager.createQuery("SELECT a FROM Aluno a");
+            return query.getResultList();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar todos os alunos.");
+            throw e;
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<Object[]> contarAlunosPorCurso(){
+    	try {
+        	String sql = "SELECT c.sigla, COUNT(a.matricula) " +
+                    "FROM Curso c LEFT JOIN Aluno a ON c.sigla = a.curso.sigla " +
+                    "GROUP BY c.sigla";
+        	Query query = entityManager.createQuery(sql);
+        	return query.getResultList();
+    	}catch(Exception e) {
+    		System.err.println("Erro ao contar alunos por curso: " + e.getMessage());
+    		throw e;
+    	}
+    }
 }

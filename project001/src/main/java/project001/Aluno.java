@@ -1,9 +1,9 @@
 package project001;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,6 +15,18 @@ public class Aluno {
 	private String nome;
 	private int idade;
 	private char genero;
+	
+	@ManyToOne
+	@JoinColumn(name = "curso_sigla")
+	private Curso curso;
+
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
+	}
 
 	public Aluno() {
 	}

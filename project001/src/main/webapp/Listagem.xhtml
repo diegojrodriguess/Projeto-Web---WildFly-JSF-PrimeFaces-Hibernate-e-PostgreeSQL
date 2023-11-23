@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Listagem de Alunos</title>
+</h:head>
+
+<h:body>
+	<h:form id="alunoListForm">
+		<p:dataTable var="aluno" value="#{alunoListController.alunos}">
+			<p:column headerText="Matrícula">
+				<h:outputText value="#{aluno.matricula}" />
+			</p:column>
+			<p:column headerText="Nome">
+				<h:outputText value="#{aluno.nome}" />
+			</p:column>
+			<p:column headerText="Idade">
+				<h:outputText value="#{aluno.idade}" />
+			</p:column>
+			<p:column headerText="Genero">
+				<h:outputText value="#{aluno.genero}" />
+			</p:column>
+			<p:column headerText="Curso">
+				<h:outputText value="#{aluno.curso.nome}" />
+			</p:column>
+		</p:dataTable>
+	</h:form>
+</h:body>
+</html>

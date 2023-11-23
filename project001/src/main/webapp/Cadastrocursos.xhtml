@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<h:head>
+	<title>Cadastro de Cursos</title>
+</h:head>
+<h:body>
+	<h:form id="cadastro">
+		<p:panel header="Cadastro">
+			<h:panelGrid columns="2">
+
+				<p:outputLabel for="sigla" value="Sigla " />
+				<p:inputText id="sigla" value="#{cursoController.curso.sigla}" />
+
+				<p:outputLabel for="nome" value="Nome: " />
+				<p:inputText id="nome" value="#{cursoController.curso.nome}" />
+
+				<p:outputLabel for="materias" value="Matérias: " />
+				<p:selectManyCheckbox id="materias"
+					value="#{cursoController.curso.materias}">
+					<f:selectItems value="#{cursoController.allMaterias}" />
+				</p:selectManyCheckbox>
+				
+			</h:panelGrid>
+			<p:commandButton value="Salvar" action="#{cursoController.salvar}" />
+		</p:panel>
+	</h:form>
+</h:body>
+</html>
