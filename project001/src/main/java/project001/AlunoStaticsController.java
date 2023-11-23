@@ -25,7 +25,6 @@ public class AlunoStaticsController implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		System.out.println("comeco");
 		barModel = new BarChartModel();
 		dadosGrafico = alunoDAO.contarAlunosPorCurso();
 
@@ -38,7 +37,6 @@ public class AlunoStaticsController implements Serializable {
 				String cursoSigla = (String) dados[0];
 				Long quantidadeAlunos = (Long) dados[1];
 				
-				System.out.println("iterando");
 
 				// Adiciona os dados da série
 				series.set(cursoSigla, quantidadeAlunos);
@@ -54,7 +52,6 @@ public class AlunoStaticsController implements Serializable {
 			Axis yAxis = barModel.getAxis(AxisType.Y);
 			yAxis.setLabel("Número de Alunos");
 			yAxis.setMin(0);
-			System.out.println("fim");
 		}
 	}
 
