@@ -21,14 +21,12 @@ public class CursoConverter implements Converter {
 			if (value != null && !value.isEmpty()) {
 				Curso curso = cursoDAO.findBySigla(value);
 				if (curso == null) {
-					// Log ou mensagem de erro, se necessário
 					throw new IllegalArgumentException("Curso não encontrado para a sigla: " + value);
 				}
 				return curso;
 			}
 			return null;
 		} catch (Exception e) {
-			// Log do erro, se necessário
 			throw new IllegalArgumentException("Erro ao converter para objeto", e);
 		}
 	}
@@ -41,13 +39,11 @@ public class CursoConverter implements Converter {
                 if (sigla != null) {
                     return sigla;
                 } else {
-                    // Log ou mensagem de erro, se necessário
                     throw new IllegalArgumentException("A sigla do curso é nula");
                 }
             }
             return null;
         } catch (Exception e) {
-            // Log do erro, se necessário
             throw new IllegalArgumentException("Erro ao converter para String", e);
         }
     }
